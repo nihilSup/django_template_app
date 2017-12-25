@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Rango app</title>
+</head>
+<body>
+    <h1> Hello there <br /> </h1>
+    <div> 
+        <a href = "{{ about_url }}">About</a> <br />
+        <img 
+          src="{% static "images/pusheen_std.jpg" %}" 
+          alt="Picture of nice cat"
+        />
+    </div>
+</body>
+</html>
