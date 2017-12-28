@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Add page to category {{ctg}}</title>
+    </head>
+    <body>
+        <h1>Add page to category: {{ctg}}</h1>
+        {% if ctg %}
+            <div>
+                <form id="page_form", method="post", action="/rango/category/{{ctg.slug}}/add_page/">
+                    {% csrf_token %}
+                    {% for hidden in form.hidden_fields %}
+                        {{hidden}}
+                    {% endfor %}
+                    {% for field in form.visible_fields %}
+                        {{field.errors}}
+                        {{field.help_text}}
+                        {{field}}
+                    {% endfor %}
+                    <input type="submit", name="submit", value="Create Page" />
+                </form>
+            </div>
+        {% else %}
+            Empty category
+        {% endif %}
+    </body>
+</html>

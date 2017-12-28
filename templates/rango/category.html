@@ -23,10 +23,14 @@
                     There is no pages in category
                 </strong>
             {% endif %}
+            <a href="/rango/category/{{category.slug}}/add_page/">Add new page </a>
         {% else %}
             <strong>Specified category doesn't exist</strong>>
         {% endif %}
     </div>
-    <div> <a href={{back}}>Back</a> </div>
+    <div> 
+        <a href={{back}}>Back</a> 
+        <br />
+    </div>
 </body>
 </html>

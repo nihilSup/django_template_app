@@ -15,6 +15,7 @@ class Category(models.Model):
 
     #Smells
     def save(self, *args, **kwargs):
+        'def save with some preproccessing'
         self.slug = slugify(self.name)
         if self.views < 0:
             self.views = 0
