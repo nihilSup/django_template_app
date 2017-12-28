@@ -9,8 +9,10 @@ from rango.models import Page
 def index(request):
     'index page dispatcher'
     category_list = Category.objects.order_by('-likes')[:5]
+    pages = Page.objects.order_by('-views')[:5]
     context_dict = {
         'categories': category_list,
+        'pages': pages,
         'url_about': reverse('about')
     }
 
@@ -32,5 +34,6 @@ def show_category(request, ctg_name_slug):
     except Category.DoesNotExist:
         context_dict['pages'] = None
         context_dict['category'] = None
-    
+    context_dict['back'] = reverse('index')
+
     return render(request, 'rango/category.html', context_dict)

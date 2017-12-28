@@ -9,6 +9,7 @@
 <body>
     <h1> Hello there <br /> </h1>
     <div> 
+        <h2> Most Liked Categories: </h2>
         {% if categories %}
         <ul>
             {% for category in categories %}
@@ -23,11 +24,25 @@
             <strong>No available categories</strong>
         {% endif %}
     </div>
+    <div> 
+            <h2> Most Viewed Pages: </h2>
+            {% if pages %}
+            <ul>
+                {% for page in pages %}
+                <li> 
+                    <a href="{{ page.url }}"> {{ page.title }} </a> : {{ page.views }}
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+                <strong>No available pages</strong>
+            {% endif %}
+        </div>
     <div>
         <a href={{url_about}}>About Rango</a>
         <img 
           src="{% static "images/pusheen_std.jpg" %}" 
-          alt="Picture of cool cat">
+          alt="Picture of cool cat"
         />
     </div>
 </body>
