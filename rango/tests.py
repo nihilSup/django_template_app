@@ -2,8 +2,18 @@ from django.test import TestCase
 from django.urls import reverse
 from django.contrib.staticfiles import finders
 
-# Thanks to Enzo Roiz https://github.com/enzoroiz who made these tests during an internship with us
+from rango.models import Category
 
+class CategoryMethodTest(TestCase):
+    def test_ensure_views_are_positive(self):
+        ctg = Category(name='test', views=-1, likes=0)
+        ctg.save()
+        self.assertEqual((ctg.views >= 0), True)
+    def test_slug_line_creation(self):
+        name_ctg = 'Some category name'
+        ctg = Category(name_ctg)
+        self.assertEqual(ctg.slug, name_ctg.lower())
+"""
 class GeneralTests(TestCase):
     def test_serving_static_files(self):
         # If using static media properly result is not NONE once it finds rango.jpg
@@ -248,3 +258,4 @@ class Chapter7ViewTests(TestCase):
 
 
     # test if the add_page.html template exists.
+"""

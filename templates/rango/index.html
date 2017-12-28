@@ -9,10 +9,25 @@
 <body>
     <h1> Hello there <br /> </h1>
     <div> 
-        <a href = "{{ about_url }}">About</a> <br />
+        {% if categories %}
+        <ul>
+            {% for category in categories %}
+            <li> 
+                <a href="/rango/category/{{ category.slug }}">
+                    {{ category.name }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+            <strong>No available categories</strong>
+        {% endif %}
+    </div>
+    <div>
+        <a href={{url_about}}>About Rango</a>
         <img 
           src="{% static "images/pusheen_std.jpg" %}" 
-          alt="Picture of nice cat"
+          alt="Picture of cool cat">
         />
     </div>
 </body>
