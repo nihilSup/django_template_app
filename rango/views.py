@@ -14,15 +14,14 @@ def index(request):
     context_dict = {
         'categories': category_list,
         'pages': pages,
-        'url_about': reverse('about')
     }
 
     return render(request, 'rango/index.html', context=context_dict)
 def about(request):
     'about page dispatcher'
-    context_dict = {'index_url': reverse('index'),
-                    'MEDIA_URL': settings.MEDIA_URL,
-                   }
+    context_dict = {
+        'MEDIA_URL': settings.MEDIA_URL,
+    }
     return render(request, 'rango/about.html', context=context_dict)
 
 def show_category(request, ctg_name_slug):

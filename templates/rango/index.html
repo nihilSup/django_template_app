@@ -1,50 +1,43 @@
-<!DOCTYPE html>
+{% extends 'rango/base.html' %}
 {% load staticfiles %}
-<html>
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Rango app</title>
-    </head>
-    <body>
-        <h1> Hello there <br /> </h1>
-        <div> 
-            <h2> Most Liked Categories: </h2>
-            {% if categories %}
+
+{% block body_block %}
+    <h1> Hello there <br /> </h1>
+    <div> 
+        <h2> Most Liked Categories: </h2>
+        {% if categories %}
+        <ul>
+            {% for category in categories %}
+            <li> 
+                <a href="{% url 'show_category' category.slug %}">
+                    {{ category.name }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+            <strong>No available categories</strong>
+        {% endif %}
+    </div>
+    <div> 
+            <h2> Most Viewed Pages: </h2>
+            {% if pages %}
             <ul>
-                {% for category in categories %}
+                {% for page in pages %}
                 <li> 
-                    <a href="/rango/category/{{ category.slug }}">
-                        {{ category.name }}
-                    </a>
+                    <a href="{{ page.url }}"> {{ page.title }} </a> : {{ page.views }}
                 </li>
                 {% endfor %}
             </ul>
             {% else %}
-                <strong>No available categories</strong>
+                <strong>No available pages</strong>
             {% endif %}
-        </div>
-        <div> 
-                <h2> Most Viewed Pages: </h2>
-                {% if pages %}
-                <ul>
-                    {% for page in pages %}
-                    <li> 
-                        <a href="{{ page.url }}"> {{ page.title }} </a> : {{ page.views }}
-                    </li>
-                    {% endfor %}
-                </ul>
-                {% else %}
-                    <strong>No available pages</strong>
-                {% endif %}
-            </div>
-        <a href="/rango/add_category/"> Add a new category </a> <br />
-        <div>
-            <a href={{url_about}}>About Rango</a>
-            <img 
-            src="{% static "images/pusheen_std.jpg" %}" 
-            alt="Picture of cool cat"
-            />
-        </div>
-    </body>
-</html>
+    </div>
+    <a href="{% url 'add_category' %}"> Add a new category </a> <br />
+    <div>
+        <img 
+        src="{% static "images/pusheen_std.jpg" %}" 
+        alt="Picture of cool cat"
+        />
+    </div>
+{% endblock %}

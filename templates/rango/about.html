@@ -1,18 +1,16 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>About Rango</title>
-</head>
-<body>
-    <h1> About page </h1>
+{% extends 'rango/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    About page
+{% endblock %}
+
+{% block body_block %}
     <div>
-        <a href = "{{ index_url }}">Back to index</a> <br />
+        Some words about app
         <img 
           src = "{{ MEDIA_URL }}pusheen_crazy.jpg" 
           alt = "crazy cat picture"
         />
     </div>
-</body>
-</html>
+{% endblock %}
