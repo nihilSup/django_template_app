@@ -1,0 +1,19 @@
+<ul>
+    {% if ctgs %}
+        {% for ctg in ctgs %}
+            {% if ctg == act_ctg %}
+                <li>
+                    <strong>
+                        <a href="{% url 'show_category' ctg.slug %}">{{ ctg.name }}</a>
+                    </strong>
+                </li>
+            {% else %}
+                <li>
+                    <a href="{% url 'show_category' ctg.slug %}">{{ ctg.name }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <li><strong>There are no categories present</strong></li>
+    {% endif %}
+</ul>
