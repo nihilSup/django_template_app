@@ -1,11 +1,14 @@
+'application views(controllers)'
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.conf import settings
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 from rango.models import Category
 from rango.models import Page
-from rango.forms import CategoryForm, PageForm
+from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
 
 def index(request):
     'index page dispatcher'
@@ -38,6 +41,7 @@ def show_category(request, ctg_name_slug):
 
     return render(request, 'rango/category.html', context_dict)
 
+@login_required
 def add_category(request):
     'add category controller'
     form = CategoryForm()
@@ -55,6 +59,7 @@ def add_category(request):
 
     return render(request, 'rango/add_category.html', {'form': form})
 
+@login_required
 def add_page(request, ctg_name_slug):
     'add page controller'
     try:
@@ -86,3 +91,72 @@ def add_page(request, ctg_name_slug):
             'ctg': ctg
         }
     )
+
+def register(request):
+    'registration controller, works both for get and post'
+    registered = False
+    if request.method == 'POST':
+        #get posted data
+        user_form = UserForm(data=request.POST)
+        profile_form = UserProfileForm(data=request.POST)
+        #check whether it is valid
+        if user_form.is_valid() and profile_form.is_valid():
+            user = user_form.save()
+            #set_password hashes plain password
+            user.set_password(user.password)
+            user.save()
+
+            #update profile after commiting user to avoid integrity problems
+            user_prof = profile_form.save(commit=False)
+            user_prof.user = user
+            if 'picture' in request.FILES:
+                user_prof.picture = request.FILES['picture']
+
+            user_prof.save()
+            registered = True
+        else:
+            print(profile_form.errors)
+            print(user_form.errors)
+    else:
+        user_form = UserForm()
+        profile_form = UserProfileForm()
+
+    return render(
+        request,
+        'rango/register.html',
+        {
+            'user_form': user_form,
+            'profile_form': profile_form,
+            'registered': registered
+        }
+    )
+
+def login_user(request):
+    'login logic'
+    if request.method == 'POST':
+        user = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(username=user, password=password)
+
+        build_context = lambda msg: {'err_msg': msg}
+
+        if user:
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect(reverse('index'))
+            else:
+                err = """Account is deactivated. Activate it and try again"""
+                return render(request, 'rango/login.html', build_context(err))
+        else:
+            print(f'Invalid username/password: {user} / {password}')
+            err = 'Invalid login details supplied'
+            return render(request, 'rango/login.html', build_context(err))
+    else:
+        return render(request, 'rango/login.html', {})
+
+@login_required
+def logout_user(request):
+    'logout logic'
+    logout(request)
+    return HttpResponseRedirect(reverse('index'))

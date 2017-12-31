@@ -2,7 +2,14 @@
 {% load staticfiles %}
 
 {% block body_block %}
-    <h1> Hello there <br /> </h1>
+    <h1> 
+        {% if user.is_authenticated %}
+            Hello {{user.username}}
+        {% else %}
+            Hello there stranger
+        {% endif %}
+         <br /> 
+    </h1>
     <div> 
         <h2> Most Liked Categories: </h2>
         {% if categories %}
