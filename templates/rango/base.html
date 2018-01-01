@@ -27,10 +27,11 @@
                 <li><a href="{% url 'about' %}">About</a></li>
                 <li><a href="{% url 'index' %}">Index</a></li>
                 {% if user.is_authenticated %}
-                    <li><a href="{% url 'logout' %}">Sign Off</a></li>
+                    <li><a href="{% url 'auth_password_change' %}">Change password</a></li>
+                    <li><a href="{% url 'auth_logout' %}?next=/rango/">Sign Off</a></li>
                 {% else %}
-                    <li><a href="{% url 'login' %}">Sign In</a></li>
-                    <li><a href="{% url 'register' %}">Sign Up!</a></li>
+                    <li><a href="{% url 'auth_login' %}">Sign In</a></li>
+                    <li><a href="{% url 'registration_register' %}">Sign Up!</a></li>
                 {% endif %}
             </ul>
         </div>

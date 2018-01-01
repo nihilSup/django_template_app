@@ -19,10 +19,20 @@ from django.urls import include
 from django.conf.urls import url
 from django.conf import settings
 from django.conf.urls.static import static
+from registration.backends.simple.urls import RegistrationView
+
 from rango import views
+
+class MyRegistrationView(RegistrationView):
+    'added redirect on success'
+    def get_success_url(self, user):
+        'returns /rango/'
+        return '/rango/'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^$', views.index, name='index'),
     url(r'^rango/', include('rango.urls')),
+    url(r'^accounts/register/$', MyRegistrationView.as_view(), name='registration_register'),
+    url(r'^accounts/', include('registration.backends.simple.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
