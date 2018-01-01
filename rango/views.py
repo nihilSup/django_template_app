@@ -1,6 +1,8 @@
 'application views(controllers)'
+from datetime import datetime
+
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
@@ -18,16 +20,40 @@ def index(request):
         'categories': category_list,
         'pages': pages,
     }
+    visitor_cookie_handler(request)
+    context_dict['visits'] = request.session['visits']
 
-    return render(request, 'rango/index.html', context=context_dict)
+    response = render(request, 'rango/index.html', context=context_dict)
+    return response
+
+def get_server_cookie(request, cookie, def_value=None):
+    'helper to get server cookie'
+    val = request.session.get(cookie)
+    return val if val else def_value
+
+def visitor_cookie_handler(request):
+    'adds visits to request session'
+    visits = int(get_server_cookie(request, 'visits', '1'))
+    last_visit_cookie = get_server_cookie(request, 'last_visit', str(datetime.now()))
+    last_visit_time = datetime.strptime(last_visit_cookie[:-7], '%Y-%m-%d %H:%M:%S')
+
+    if (datetime.now() - last_visit_time).days > 0:
+        visits = visits + 1
+        request.session['last_visit'] = str(datetime.now())
+    else:
+        request.session['last_visit'] = last_visit_cookie
+    request.session['visits'] = visits
+
 def about(request):
     'about page dispatcher'
     context_dict = {
         'MEDIA_URL': settings.MEDIA_URL,
+        'visits': get_server_cookie(request, 'visits', '1')
     }
     return render(request, 'rango/about.html', context=context_dict)
 
 def show_category(request, ctg_name_slug):
+    'show ctg controller'
     context_dict = {}
     try:
         ctg = Category.objects.get(slug=ctg_name_slug)

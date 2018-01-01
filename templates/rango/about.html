@@ -7,10 +7,12 @@
 
 {% block body_block %}
     <div>
-        Some words about app
+        Some words about app: 
         <img 
           src = "{{ MEDIA_URL }}pusheen_crazy.jpg" 
           alt = "crazy cat picture"
         />
+        <br />
+        Count of your visits: {{visits}}
     </div>
 {% endblock %}
