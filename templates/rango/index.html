@@ -2,43 +2,52 @@
 {% load staticfiles %}
 
 {% block body_block %}
-    <h1> 
-        {% if user.is_authenticated %}
-            Hello {{user.username}}
-        {% else %}
-            Hello there stranger
-        {% endif %}
-         <br /> 
-    </h1>
-    <div> 
-        <h2> Most Liked Categories: </h2>
-        {% if categories %}
-        <ul>
-            {% for category in categories %}
-            <li> 
-                <a href="{% url 'show_category' category.slug %}">
-                    {{ category.name }}
-                </a>
-            </li>
-            {% endfor %}
-        </ul>
-        {% else %}
-            <strong>No available categories</strong>
-        {% endif %}
-    </div>
-    <div> 
-            <h2> Most Viewed Pages: </h2>
-            {% if pages %}
-            <ul>
-                {% for page in pages %}
-                <li> 
-                    <a href="{{ page.url }}"> {{ page.title }} </a> : {{ page.views }}
-                </li>
-                {% endfor %}
-            </ul>
+    <div class="hero-unit">
+        <h1> 
+            {% if user.is_authenticated %}
+                Hello {{user.username}}
             {% else %}
-                <strong>No available pages</strong>
-            {% endif %}
+                Hello there stranger
+            {% endif %} 
+        </h1>
+        <br />
+        <p>
+            Stub welcome speach
+        </p>
+    </div>
+    <div class="row-fluid">
+        <div class="span6"> 
+            <h2> Most Liked Categories: </h2>
+            <p>
+                {% if categories %}
+                    <ul class="list-group">
+                        {% for category in categories %}
+                        <li class="list-group-item"> 
+                            <a href="{% url 'show_category' category.slug %}">
+                                {{ category.name }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <strong>No available categories</strong>
+                {% endif %}
+            </p>
+        </div>
+        <div class="span6"> 
+                <h2> Most Viewed Pages: </h2>
+                {% if pages %}
+                    <ul>
+                        {% for page in pages %}
+                            <li> 
+                                <a href="{{ page.url }}"> {{ page.title }} </a> : {{ page.views }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <strong>No available pages</strong>
+                {% endif %}
+        </div>
     </div>
     <a href="{% url 'add_category' %}"> Add a new category </a> <br />
     <div>

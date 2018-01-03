@@ -6,23 +6,29 @@
 {% endblock %}
 
 {% block body_block %}
-    <h1>Add page to category: {{ctg}}</h1>
-    {% if ctg %}
-        <div>
-            <form id="page_form", method="post", action="{% url 'add_page' ctg.slug %}">
-                {% csrf_token %}
-                {% for hidden in form.hidden_fields %}
-                    {{hidden}}
-                {% endfor %}
-                {% for field in form.visible_fields %}
-                    {{field.errors}}
-                    {{field.help_text}}
-                    {{field}}
-                {% endfor %}
-                <input type="submit", name="submit", value="Create Page" />
-            </form>
-        </div>
-    {% else %}
-        Empty category
-    {% endif %}
+    <div class="hero-unit">
+        <h1>Add page to category: {{ctg}}</h1>
+        <br/>
+        {% if ctg %}
+            <div class="container">
+                <form class="span6" id="page_form", method="post", action="{% url 'add_page' ctg.slug %}">
+                    {% csrf_token %}
+                    {% for hidden in form.hidden_fields %}
+                        {{hidden}}
+                    {% endfor %}
+                    {% for field in form.visible_fields %}
+                        {{field.errors}}
+                        <br/>
+                        {{field.help_text}}
+                        <br/>
+                        {{field}}
+                    {% endfor %}
+                    <br/>
+                    <input class="btn btn-primary span6" type="submit", name="submit", value="Create Page" />
+                </form>
+            </div>
+        {% else %}
+        <div style="color: red;">Error: empty category</div>
+        {% endif %}
+    </div>
 {% endblock %}
