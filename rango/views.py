@@ -118,6 +118,34 @@ def add_page(request, ctg_name_slug):
         }
     )
 
+@login_required
+def register_profile(request):
+    'registration controller, works both for get and post'
+    if request.method == 'POST':
+        #get posted data
+        profile_form = UserProfileForm(data=request.POST)
+        #check whether it is valid
+        if profile_form.is_valid():
+            #update profile after commiting user to avoid integrity problems
+            user_prof = profile_form.save(commit=False)
+            user_prof.user = request.user
+            if 'picture' in request.FILES:
+                user_prof.picture = request.FILES['picture']
+            user_prof.save()
+            return redirect('index')
+        else:
+            print(profile_form.errors)
+    else:
+        profile_form = UserProfileForm()
+
+    return render(
+        request,
+        'rango/profile_registration.html',
+        {
+            'form': profile_form,
+        }
+    )
+
 def login_user(request):
     'login logic'
     if request.method == 'POST':

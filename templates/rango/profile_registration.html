@@ -1,0 +1,17 @@
+{% extends "rango/base.html" %}
+{% block title_block %}
+    Customizing profile
+{% endblock %}
+{% block body_block %}
+<div class="hero-unit">
+    <h1>Customizing profile</h1>
+    <br/>
+    <div class="container">
+        <form class="form-signin span3" method="post" action="." enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input class="btn btn-lg btn-primary btn-block" type="submit" value="Submit" />
+        </form>        
+    </div>
+</div>
+{% endblock %}

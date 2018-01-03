@@ -26,8 +26,9 @@ from rango import views
 class MyRegistrationView(RegistrationView):
     'added redirect on success'
     def get_success_url(self, user):
-        'returns /rango/'
-        return '/rango/'
+        'redirect to after registration'
+        print(user.__dict__)
+        return f'/rango/register_profile'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
