@@ -1,7 +1,7 @@
 'application views(controllers)'
 from datetime import datetime
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.conf import settings
@@ -118,45 +118,6 @@ def add_page(request, ctg_name_slug):
         }
     )
 
-def register(request):
-    'registration controller, works both for get and post'
-    registered = False
-    if request.method == 'POST':
-        #get posted data
-        user_form = UserForm(data=request.POST)
-        profile_form = UserProfileForm(data=request.POST)
-        #check whether it is valid
-        if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save()
-            #set_password hashes plain password
-            user.set_password(user.password)
-            user.save()
-
-            #update profile after commiting user to avoid integrity problems
-            user_prof = profile_form.save(commit=False)
-            user_prof.user = user
-            if 'picture' in request.FILES:
-                user_prof.picture = request.FILES['picture']
-
-            user_prof.save()
-            registered = True
-        else:
-            print(profile_form.errors)
-            print(user_form.errors)
-    else:
-        user_form = UserForm()
-        profile_form = UserProfileForm()
-
-    return render(
-        request,
-        'rango/register.html',
-        {
-            'user_form': user_form,
-            'profile_form': profile_form,
-            'registered': registered
-        }
-    )
-
 def login_user(request):
     'login logic'
     if request.method == 'POST':
@@ -186,3 +147,16 @@ def logout_user(request):
     'logout logic'
     logout(request)
     return HttpResponseRedirect(reverse('index'))
+
+def track_url(request):
+    'url tracking handler'
+    if request.method == 'GET':
+        if 'page_id' in request.GET:
+            page_id = request.GET['page_id']
+            page = Page.objects.get(id=page_id)
+            page.views += 1
+            page.save()
+            url = page.url
+            return redirect(url)
+
+    return redirect('index')
