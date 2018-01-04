@@ -31,6 +31,7 @@
                 <ul class="nav pull-right">
                     {% if user.is_authenticated %}
                         <li class="navbar-text">Welcome, {{ user.username }}!</li>
+                        <li><a href="{% url 'show_profile' user.username %}">Profile</a></li>
                         <li><a href="{% url 'auth_logout' %}?next=/rango/">Sign off</a></li>
                     {% else %}
                         <li><a href="{% url 'registration_register' %}">Sign Up!</a></li>

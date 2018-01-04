@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^category/(?P<ctg_name_slug>[\w\-]+)/add_page/$', views.add_page, name='add_page'),
     url(r'^goto/$', views.track_url, name='goto'),
     url(r'^register_profile/$', views.register_profile, name='register_profile'),
+    url(r'^profile/(?P<username>[\w\-]+)/$', views.show_profile, name='show_profile'),
 ]

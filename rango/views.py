@@ -6,10 +6,10 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
-from rango.models import Category
-from rango.models import Page
+from rango.models import Category, Page, UserProfile
 from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
 
 def index(request):
@@ -145,6 +145,31 @@ def register_profile(request):
             'form': profile_form,
         }
     )
+
+@login_required
+def show_profile(request, username):
+    'view and edit profile logic'
+    context_dict = {'username': username}
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return redirect('index')
+    context_dict['username'] = user.username
+    user_profile = UserProfile.objects.get_or_create(user=user)[0]
+    context_dict['profile'] = user_profile
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
+        if form.is_valid:
+            form.save(commit=True)
+            return redirect('show_profile', username)
+    else:
+        form = UserProfileForm({
+            'website': user_profile.website,
+            'picture': user_profile.picture
+        })
+        context_dict['form'] = form
+
+    return render(request, 'rango/profile.html', context_dict)
 
 def login_user(request):
     'login logic'
