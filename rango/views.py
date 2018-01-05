@@ -229,8 +229,10 @@ def like_category(request):
         return HttpResponse(likes)
 
 def get_ctg_list(starts_with='', max_results=0):
-    'returns list of categories which starts with supplied prefix'
-    ctg_list = []
+    """returns list of categories which starts with supplied prefix.
+    If prefix is empty returns all available categories
+    """
+    ctg_list = Category.objects.all()
     if starts_with:
         ctg_list = Category.objects.filter(name__istartswith=starts_with)
     if max_results > 0:
@@ -245,6 +247,6 @@ def suggest_category(request):
     starts_with = ''
     if request.method == 'GET':
         starts_with = request.GET['suggestion']
-    ctgs = get_ctg_list(starts_with, 8)
+    ctgs = get_ctg_list(starts_with, 0)
 
     return render(request, 'rango/ctgs.html', {'ctgs': ctgs})
