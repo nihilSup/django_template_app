@@ -42,10 +42,52 @@ def populate():
          'views': 56}
     ]
 
+    pascal_pages = [
+        {'title':'FastPlaz',
+         'url':'http://www.fastplaz.com',
+         'views': 13},
+    ]
+
+    perl_pages = [
+        {'title':'PragmaticPerl',
+         'url':'http://pragmaticperl.com',
+         'views': 13},
+    ]
+
+    php_pages = [
+        {'title':'Php SU',
+         'url':'http://www.php.su',
+         'views': 13},
+    ]
+
+    prolog_pages = [
+        {'title':'SWI Prolog',
+         'url':'http://www.swi-prolog.org',
+         'views': 13},
+    ]
+
+    post_script_pages = [
+        {'title':'Adobe post script',
+         'url':'http://www.adobe.com/products/postscript.html',
+         'views': 13},
+    ]
+
+    programming_pages = [
+        {'title':'Habr',
+         'url':'https://habrahabr.ru',
+         'views': 13},
+    ]
+
     cats = {
         'Python': {'pages': python_pages, 'views': 128, 'likes': 64},
         'Django': {'pages': django_pages, 'views': 64, 'likes': 32},
-        'Other Frameworks': {'pages': other_pages, 'views': 32, 'likes': 16}
+        'Other Frameworks': {'pages': other_pages, 'views': 32, 'likes': 16},
+        'Pascal': {'pages': pascal_pages, 'views': 0, 'likes': 0},
+        'Perl': {'pages': perl_pages, 'views': 0, 'likes': 0},
+        'PHP': {'pages': php_pages, 'views': 0, 'likes': 0},
+        'Prolog': {'pages': prolog_pages, 'views': 0, 'likes': 0},
+        'PostScript': {'pages': post_script_pages, 'views': 0, 'likes': 0},
+        'Programming': {'pages': programming_pages, 'views': 0, 'likes': 0},
     }
 
     for cat, cat_data in cats.items():
