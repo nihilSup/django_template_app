@@ -12,4 +12,6 @@ urlpatterns = [
     url(r'^goto/$', views.track_url, name='goto'),
     url(r'^register_profile/$', views.register_profile, name='register_profile'),
     url(r'^profile/(?P<username>[\w\-]+)/$', views.show_profile, name='show_profile'),
+    url(r'^like/$', views.like_category, name='like_category'),
+    url(r'^suggest/$', views.suggest_category, name='suggest_category'),
 ]

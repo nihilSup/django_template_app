@@ -2,7 +2,7 @@
 from datetime import datetime
 
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
@@ -213,3 +213,38 @@ def track_url(request):
             return redirect(url)
 
     return redirect('index')
+
+@login_required
+def like_category(request):
+    'like button server side handler'
+    if request.method == 'GET':
+        ctg_id = request.GET['ctg_id']
+        likes = 0
+        if ctg_id:
+            category = Category.objects.get(id=ctg_id)
+            if category:
+                category.likes += 1
+                category.save()
+                likes = category.likes
+        return HttpResponse(likes)
+
+def get_ctg_list(starts_with='', max_results=0):
+    'returns list of categories which starts with supplied prefix'
+    ctg_list = []
+    if starts_with:
+        ctg_list = Category.objects.filter(name__istartswith=starts_with)
+    if max_results > 0:
+        if len(ctg_list) > max_results:
+            ctg_list = ctg_list[:max_results]
+
+    return ctg_list
+
+def suggest_category(request):
+    'category filter controller'
+    ctgs = []
+    starts_with = ''
+    if request.method == 'GET':
+        starts_with = request.GET['suggestion']
+    ctgs = get_ctg_list(starts_with, 8)
+
+    return render(request, 'rango/ctgs.html', {'ctgs': ctgs})

@@ -13,6 +13,15 @@
     <div class="hero-unit">
         {% if category %}
             <h1>{{ category.name }}</h1>
+            <div>
+                <strong id="like_count">{{ category.likes }}</strong> people like this
+                {% if user.is_authenticated %}
+                    <button id="likes" data-ctgid="{{category.id}}" 
+                      class="btn btn-primary btn-sm" type="button">
+                        Like
+                    </button>
+                {% endif %}
+            </div>
             <br/>
             {% if pages %}
                 <ul>

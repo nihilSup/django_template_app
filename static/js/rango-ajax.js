@@ -1,6 +1,38 @@
 
 $(document).ready(function() {
-	
+	$('#likes').click(function(){
+		var ctgId = $(this).attr('data-ctgid');
+		$.get('/rango/like/', {ctg_id: ctgId}, function(data){
+			$('#like_count').html(data);
+			$('#likes').hide();
+		});
+	});
+
+	$('#suggestion').keyup(function(){
+		var query;
+		query = $(this).val();
+		$.get('/rango/suggest/', {suggestion: query}, function (data) {
+			$('#ctgs').html(data);
+		});
+	});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/*
 
 	$('#likes').click(function(){
 	        var catid;
@@ -30,6 +62,6 @@ $(document).ready(function() {
 	                   $('#pages').html(data);
 	                   me.hide();
 	               });
-	    });
+	    });*/
 
 });
